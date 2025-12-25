@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaña Alerta Amarilla – CACOM-4</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Animaciones del Sistema Alerta Amarilla */
+        @keyframes pulse-alert {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.8); transform: scale(1); }
+            50% { box-shadow: 0 0 0 15px rgba(234, 179, 8, 0); transform: scale(1.02); }
+        }
+        
+        body { font-family: 'Inter', sans-serif; background-color: #111827; color: #f3f4f6; scroll-behavior: smooth; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        
+        /* El Rombo - Símbolo Central */
+        .rombo-icon { 
+            width: 50px; height: 50px; 
+            background-color: #fbbf24; 
+            transform: rotate(45deg); 
+            display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+            border: 3px solid #000;
+        }
+        .rombo-content { transform: rotate(-45deg); font-weight: 900; color: black; font-size: 1.5rem; }
+        
+        /* Contenedor de Juegos - Estilo HUD Táctico */
+        .neuro-box { 
+            @apply relative bg-slate-900 rounded-2xl overflow-hidden border-2 border-yellow-500/30 shadow-inner flex flex-col items-center justify-center select-none; 
+            height: 300px;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.9);
+        }
+        .neuro-overlay {
+            background: 
+                linear-gradient(rgba(234, 179, 8, 0.05) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(234, 179, 8, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            position: absolute; inset: 0; pointer-events: none; z-index: 1;
+        }
+        
+        /* Botones Tácticos */
+        .btn-tactical {
+            @apply bg-yellow-500 text-black font-black uppercase tracking-widest py-3 px-6 rounded-xl hover:bg-yellow-400 hover:scale-105 transition-all shadow-[0_0_15px_rgba(234,179,8,0.4)];
+        }
+        .btn-tactical:disabled {
+            @apply opacity-50 grayscale cursor-not-allowed transform-none shadow-none;
+        }
+
+        .card-day { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-day:hover { transform: translateY(-5px); box-shadow: 0 10px 20px -5px rgba(234, 179, 8, 0.2); }
+    </style>
+</head>
+<body>
+
+    <!-- Header Táctico Fijo -->
+    <header class="bg-black/90 backdrop-blur-md text-white shadow-2xl sticky top-0 z-50 border-b-4 border-yellow-500">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <div class="rombo-icon animate-[pulse-alert_3s_infinite]"><span class="rombo-content">!</span></div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tighter uppercase italic">Alerta Amarilla</h1>
+                    <p class="text-[10px] text-yellow-500 font-mono font-bold tracking-widest uppercase">CACOM-4 // PREVENCIÓN TOTAL</p>
+                </div>
+            </div>
+            <!-- Menú simplificado -->
+            <button onclick="resetProgress()" class="text-[10px] text-red-500 font-bold border border-red-900 px-2 py-1 rounded hover:bg-red-900/20">RESET</button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-6 space-y-12">
+
+        <!-- SECCIÓN 1: CAMPAÑA VISUAL (IMÁGENES TIPO IA) -->
+        <section class="space-y-6">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-8 bg-yellow-500"></div>
+                <div>
+                    <h2 class="text-2xl font-black uppercase text-white">Evidencia Visual</h2>
+                    <p class="text-xs text-slate-400">Impacto de la campaña en terreno</p>
+                </div>
+            </div>
+            
+            <!-- Grid de Imágenes -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- SLOT 1: IDENTIFICACIÓN (NUEVA IMAGEN: LLUVIA EN PARABRISAS) -->
+                <div class="relative h-64 bg-slate-900 rounded-3xl overflow-hidden border-2 border-slate-800 shadow-xl group hover:border-yellow-500 transition-all">
+                    <!-- Imagen: Vista desde el conductor con lluvia y luces borrosas (Riesgo real) -->
+                    <img src="https://images.unsplash.com/photo-1516912481808-3406841bd33c?auto=format&fit=crop&q=80&w=800" alt="Conducción peligrosa con lluvia en parabrisas" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                    
+                    <!-- Capa de Texto -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 z-10">
+                        <span class="bg-yellow-500 text-black text-[10px] font-bold px-3 py-1 rounded-full mb-2 inline-block shadow-lg">FASE 1</span>
+                        <h3 class="text-white font-black text-2xl leading-none uppercase italic drop-shadow-lg">Identificación<br>del Riesgo</h3>
+                    </div>
+                </div>
+
+                <!-- SLOT 2: CONCIENCIA -->
+                <div class="relative h-64 bg-slate-900 rounded-3xl overflow-hidden border-2 border-slate-800 shadow-xl group hover:border-yellow-500 transition-all">
+                    <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=800" alt="Conductor atento" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 z-10">
+                        <span class="bg-yellow-500 text-black text-[10px] font-bold px-3 py-1 rounded-full mb-2 inline-block shadow-lg">FASE 2</span>
+                        <h3 class="text-white font-black text-2xl leading-none uppercase italic drop-shadow-lg">Conciencia<br>Situacional</h3>
+                    </div>
+                </div>
+
+                <!-- SLOT 3: REGRESO SEGURO -->
+                <div class="relative h-64 bg-slate-900 rounded-3xl overflow-hidden border-2 border-slate-800 shadow-xl group hover:border-yellow-500 transition-all">
+                    <img src="https://images.unsplash.com/photo-1484863137850-59afcfe05386?auto=format&fit=crop&q=80&w=800" alt="Familia militar" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 z-10">
+                        <span class="bg-yellow-500 text-black text-[10px] font-bold px-3 py-1 rounded-full mb-2 inline-block shadow-lg">FASE 3</span>
+                        <h3 class="text-white font-black text-2xl leading-none uppercase italic drop-shadow-lg">Regreso<br>Seguro</h3>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+<section class="space-y-6">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-8 bg-red-600 animate-pulse"></div>
+                <div>
+                    <h2 class="text-2xl font-black uppercase text-white">Instrucción de Comando</h2>
+                    <p class="text-xs text-slate-400">Material audiovisual clasificado para entrenamiento</p>
+                </div>
+            </div>
+            
+            <div class="bg-black rounded-3xl overflow-hidden shadow-2xl border-4 border-yellow-500/50 relative">
+                <div class="absolute top-4 left-4 z-20 flex gap-2">
+                    <span class="bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded animate-pulse">EN VIVO ●</span>
+                    <span class="bg-black/50 text-white text-[10px] font-mono px-2 py-1 rounded border border-white/20">CAM-04</span>
+                </div>
+                
+                <div class="aspect-video w-full bg-slate-900 flex items-center justify-center relative group">
+                    <video controls loop class="w-full h-full object-cover">
+                        <source src="alerta.mp4" type="video/mp4">
+                        Su navegador no soporta el formato de video.
+                    </video>
+                </div>
+            </div>
+        </section>
+
+             
+        </section>
+
+        <!-- SECCIÓN 2: ESTADÍSTICA DE IMPACTO -->
+        <section class="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500 blur-[80px] opacity-10 rounded-full pointer-events-none"></div>
+            <div class="space-y-4 relative z-10">
+                <h2 class="text-3xl font-black text-white leading-none">ÍNDICE DE<br><span class="text-yellow-500">ACCIDENTALIDAD 2025</span></h2>
+                <p class="text-slate-400 text-sm">
+                    Sin la "Alerta Amarilla", la proyección es crítica. Su entrenamiento cambia esta gráfica.
+                </p>
+                <div class="h-[250px] w-full">
+                    <canvas id="accidentalidadChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: ENTRENAMIENTO 21 DÍAS -->
+        <section id="training-grid">
+            <div class="flex justify-between items-end mb-6 border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-3xl font-black text-white uppercase italic">21 Días</h2>
+                    <p class="text-yellow-500 text-xs font-mono">SISTEMA NEURO-ADAPTATIVO</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-[10px] font-bold text-slate-500 mb-1">PROGRESO</div>
+                    <div class="w-24 h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="h-full bg-yellow-500 w-0 transition-all duration-1000 shadow-[0_0_10px_#eab308]"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="days-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Se genera automáticamente -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: VÍNCULO (Opcional, sin base de datos, solo local) -->
+        <section class="bg-gradient-to-r from-yellow-500 to-yellow-600 p-8 rounded-3xl shadow-2xl text-black relative overflow-hidden">
+            <div class="relative z-10">
+                <h3 class="text-2xl font-black uppercase mb-2">Su Motivo</h3>
+                <p class="text-sm font-bold opacity-80 mb-4">"¿Quién espera que usted vea el rombo amarillo hoy?"</p>
+                <input type="text" id="personal-motive" class="w-full bg-white/20 border-2 border-black/10 placeholder-black/50 text-black font-bold p-4 rounded-xl backdrop-blur-sm focus:bg-white transition-all outline-none" placeholder="Escriba el nombre aquí..." onchange="saveMotive(this.value)">
+            </div>
+            <div class="absolute -right-10 -bottom-10 text-9xl opacity-20 rotate-12">⚓</div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-10 text-slate-600 text-[10px] font-mono uppercase">
+        <p>Departamento de Seguridad Operacional</p>
+        <p class="text-yellow-500/50 mt-2">GRUIA-42 // CACOM-4</p>
+    </footer>
+
+    <!-- MODAL DE JUEGO (Mejorado con Reinicio) -->
+    <div id="modal-reto" class="fixed inset-0 bg-black/95 z-[100] hidden items-center justify-center p-4 backdrop-blur-lg">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            
+            <!-- Header Modal -->
+            <div class="bg-black p-4 flex justify-between items-center border-b-2 border-yellow-500">
+                <div class="flex items-center gap-3">
+                    <div class="rombo-icon w-8 h-8 text-xs border-2"><span class="rombo-content">!</span></div>
+                    <h3 id="modal-title" class="text-lg font-black text-white uppercase tracking-wider">ENTRENAMIENTO</h3>
+                </div>
+                <button onclick="closeModal()" class="text-slate-500 hover:text-white transition-colors text-2xl font-bold">&times;</button>
+            </div>
+
+            <div class="p-6 space-y-6 overflow-y-auto">
+                <p id="modal-description" class="text-slate-300 text-sm font-medium leading-relaxed border-l-4 border-yellow-500 pl-4 bg-yellow-500/5 p-2 rounded-r">...</p>
+                
+                <!-- Área de Juego -->
+                <div id="interactive-game-area" class="neuro-box">
+                    <div class="neuro-overlay"></div>
+                </div>
+
+                <!-- Feedback Area -->
+                <div id="game-feedback" class="hidden flex flex-col gap-3">
+                    <div id="feedback-content" class="p-4 rounded-xl text-center border"></div>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="btn-retry" class="bg-slate-700 text-white font-bold py-3 rounded-xl hover:bg-slate-600 transition-all uppercase text-xs">
+                            ↻ Reintentar
+                        </button>
+                        <button id="btn-complete-day" class="btn-tactical text-xs" disabled>
+                            CONFIRMAR ✅
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- SISTEMA SIN LOGIN (LOCAL STORAGE) ---
+        const STORAGE_KEY = 'cacom4_alerta_amarilla_v1';
+        let userProgress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+        // --- CATALOGO DE ENTRENAMIENTO ---
+        const RETOS = Array.from({length: 21}, (_, i) => ({
+            id: i + 1,
+            type: ['reflex', 'scan', 'coordination', 'decision'][i % 4],
+            title: [
+                "Reacción de Frenado", "Escaneo de Amenazas", "Control de Volante", "Decisión Climática",
+                "Foco Atencional", "Visión Periférica", "Control Emocional", "Memoria Vial",
+                "Cálculo Espacial", "Respeto al Semáforo", "Estabilidad", "Patrones de Riesgo",
+                "Velocidad Segura", "Filtro Distractor", "Coordinación", "Emergencia",
+                "Visión Nocturna", "Fatiga", "Anticipación", "Hábito", "Alerta Amarilla Total"
+            ][i],
+            desc: [
+                "El rombo amarillo significa PREVENCIÓN. Frene (haga clic) tan pronto vea la señal VERDE.",
+                "Encuentre el ícono de ALERTA AMARILLA (⚠️) escondido entre el tráfico.",
+                "Mantenga el indicador en la zona segura. La estabilidad salva vidas.",
+                "Ante condiciones adversas, elija la acción más segura instantáneamente.",
+            ][i] || "Complete el protocolo de Alerta Amarilla asignado."
+        }));
+
+        // --- INICIALIZACIÓN ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGrid();
+            initChart();
+            loadMotive();
+        });
+
+        // --- LÓGICA DE UI ---
+        function renderGrid() {
+            const container = document.getElementById('days-grid');
+            container.innerHTML = '';
+            
+            RETOS.forEach((reto, index) => {
+                const isCompleted = userProgress.includes(reto.id);
+                const typeIcon = { 'reflex': '⚡', 'scan': '👁️', 'coordination': '🎯', 'decision': '🧠' }[reto.type];
+                
+                const card = document.createElement('div');
+                card.className = `card-day p-4 rounded-2xl border-2 relative overflow-hidden group cursor-pointer ${isCompleted ? 'bg-yellow-500 border-yellow-400 text-black' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-yellow-500/50 hover:text-white'}`;
+                card.onclick = () => openReto(reto.id);
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-black uppercase tracking-widest opacity-70">DÍA ${String(reto.id).padStart(2,'0')}</span>
+                        <span class="text-lg">${isCompleted ? '✅' : typeIcon}</span>
+                    </div>
+                    <h4 class="text-xs font-black uppercase leading-tight">${reto.title}</h4>
+                    ${isCompleted ? '<div class="absolute inset-0 bg-yellow-400/20 pointer-events-none"></div>' : ''}
+                `;
+                container.appendChild(card);
+            });
+
+            // Actualizar barra
+            const pct = (userProgress.length / 21) * 100;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+        }
+
+        // --- MOTOR DE JUEGO (Con Reinicio) ---
+        let currentDayId = 0;
+
+        function openReto(dia) {
+            currentDayId = dia;
+            const reto = RETOS[dia-1];
+            document.getElementById('modal-title').innerText = reto.title;
+            document.getElementById('modal-description').innerText = reto.desc;
+            
+            resetGameUI();
+            startGameLogic(reto.type);
+            
+            document.getElementById('modal-reto').classList.replace('hidden', 'flex');
+        }
+
+        function resetGameUI() {
+            const area = document.getElementById('interactive-game-area');
+            const feedback = document.getElementById('game-feedback');
+            area.innerHTML = '<div class="neuro-overlay"></div>';
+            feedback.classList.add('hidden');
+        }
+
+        function startGameLogic(type) {
+            const area = document.getElementById('interactive-game-area');
+            // Limpiar eventos anteriores clonando el nodo (truco rápido)
+            const newArea = area.cloneNode(true);
+            area.parentNode.replaceChild(newArea, area);
+            
+            if (type === 'reflex') initReflexGame(newArea);
+            else if (type === 'scan') initScanGame(newArea);
+            else if (type === 'coordination') initCoordinationGame(newArea);
+            else if (type === 'decision') initDecisionGame(newArea);
+        }
+
+        // JUEGO 1: REFLEJO (Modificado para Alerta)
+        function initReflexGame(container) {
+            const msg = document.createElement('div');
+            msg.className = "text-2xl font-black text-slate-500 uppercase tracking-widest z-10 hud-text text-center";
+            msg.innerHTML = "ALERTA AMARILLA ACTIVADA<br><span class='text-xs'>ESPERE SEÑAL VERDE</span>";
+            container.appendChild(msg);
+            
+            container.style.backgroundColor = '#111827';
+            
+            let waiting = true;
+            let ended = false;
+
+            const timeout = setTimeout(() => {
+                if(ended) return;
+                waiting = false;
+                container.style.backgroundColor = '#22c55e'; // Verde
+                msg.innerText = "¡ACCIÓN!";
+                msg.className = "text-5xl font-black text-white uppercase tracking-widest z-10 hud-text animate-ping";
+                const start = performance.now();
+                
+                container.onclick = () => {
+                    if(ended) return;
+                    ended = true;
+                    const time = Math.floor(performance.now() - start);
+                    showFeedback(time < 600, `TIEMPO: ${time}ms`, "Reacción segura.", "Demasiado lento. Riesgo de impacto.");
+                };
+            }, 2000 + Math.random() * 2000);
+
+            container.onclick = () => {
+                if (waiting && !ended) {
+                    ended = true;
+                    clearTimeout(timeout);
+                    showFeedback(false, "FALSA ALARMA", "", "No adivine. Espere la señal real.");
+                }
+            };
+        }
+
+        // JUEGO 2: ESCANEO (Busca el Triángulo)
+        function initScanGame(container) {
+            const icons = ['🛑','⛔','🚫','⭕','⬛','🔷','🔶'];
+            const targetIcon = '⚠️';
+            container.innerHTML = '<div class="neuro-overlay"></div><div class="absolute top-2 left-2 text-yellow-500 font-mono text-xs z-20 animate-pulse">BUSCANDO AMENAZA...</div>';
+            
+            // Distractores
+            for(let i=0; i<30; i++) {
+                const el = document.createElement('div');
+                el.innerText = icons[Math.floor(Math.random()*icons.length)];
+                el.className = 'absolute text-2xl opacity-30 select-none pointer-events-none';
+                el.style.left = Math.random() * 90 + '%';
+                el.style.top = Math.random() * 90 + '%';
+                container.appendChild(el);
+            }
+
+            // Objetivo
+            const target = document.createElement('div');
+            target.innerText = targetIcon;
+            target.className = 'absolute text-5xl cursor-pointer hover:scale-125 transition-transform z-20 drop-shadow-[0_0_10px_rgba(234,179,8,0.8)] animate-bounce';
+            target.style.left = Math.random() * 80 + 10 + '%';
+            target.style.top = Math.random() * 80 + 10 + '%';
+            
+            target.onclick = () => {
+                showFeedback(true, "CONTACTO VISUAL", "Amenaza detectada a tiempo.", "");
+            };
+            container.appendChild(target);
+        }
+
+        // JUEGO 3: COORDINACIÓN
+        function initCoordinationGame(container) {
+            container.innerHTML = `
+                <div class="neuro-overlay"></div>
+                <div class="w-3/4 h-12 bg-slate-800 rounded-full relative overflow-hidden border-4 border-slate-600">
+                    <div class="absolute left-1/2 top-0 bottom-0 w-20 -ml-10 bg-green-900/50 border-x-2 border-green-500 z-0 flex items-center justify-center text-[10px] text-green-500 font-bold">SEGURO</div>
+                    <div id="moving-target" class="absolute top-1 bottom-1 w-6 bg-yellow-500 rounded-sm shadow-[0_0_15px_rgba(234,179,8,1)] z-10" style="left:0%"></div>
+                </div>
+                <p class="text-xs text-yellow-500 font-mono mt-6 uppercase font-bold animate-pulse">Clic para estabilizar</p>
+            `;
+            
+            const target = document.getElementById('moving-target');
+            let pos = 0; let dir = 2.5; let moving = true;
+            
+            const loop = setInterval(() => {
+                if(!moving) { clearInterval(loop); return; }
+                pos += dir;
+                if (pos > 94 || pos < 0) dir *= -1;
+                target.style.left = pos + '%';
+            }, 16); 
+
+            container.onclick = () => {
+                if(!moving) return;
+                moving = false;
+                const success = pos >= 40 && pos <= 60;
+                showFeedback(success, success ? "ESTABILIZADO" : "PÉRDIDA DE CONTROL", "Vehículo bajo control.", "Salida de la vía.");
+            };
+        }
+
+        // JUEGO 4: DECISIÓN
+        function initDecisionGame(container) {
+            const scenarios = [
+                { q: "LLUVIA FUERTE", good: "BAJAR VELOCIDAD", bad: "MANTENER RITMO" },
+                { q: "NIÑO EN ACERA", good: "PREPARAR FRENO", bad: "USAR PITO" },
+                { q: "NEBLINA DENSA", good: "LUCES BAJAS", bad: "LUCES ALTAS" }
+            ];
+            const s = scenarios[Math.floor(Math.random() * scenarios.length)];
+            
+            container.innerHTML = `
+                <div class="neuro-overlay"></div>
+                <div class="z-10 text-center w-full px-4">
+                    <h3 class="text-2xl font-black text-white mb-6 tracking-widest bg-black/50 p-2 rounded">${s.q}</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button id="btn-a" class="py-6 bg-slate-800 border-2 border-slate-600 text-yellow-500 font-bold rounded-xl hover:bg-slate-700 transition-all uppercase text-sm">${Math.random()>0.5 ? s.good : s.bad}</button>
+                        <button id="btn-b" class="py-6 bg-slate-800 border-2 border-slate-600 text-yellow-500 font-bold rounded-xl hover:bg-slate-700 transition-all uppercase text-sm"></button>
+                    </div>
+                </div>
+            `;
+            
+            // Asignar texto restante
+            const btnA = document.getElementById('btn-a');
+            const btnB = document.getElementById('btn-b');
+            btnB.innerText = btnA.innerText === s.good ? s.bad : s.good;
+
+            const check = (txt) => {
+                const success = txt === s.good;
+                showFeedback(success, success ? "DECISIÓN CORRECTA" : "ERROR DE JUICIO", "Maniobra segura ejecutada.", "Acción peligrosa.");
+            };
+
+            btnA.onclick = (e) => { e.stopPropagation(); check(btnA.innerText); };
+            btnB.onclick = (e) => { e.stopPropagation(); check(btnB.innerText); };
+        }
+
+        // --- SISTEMA DE FEEDBACK Y GUARDADO ---
+        function showFeedback(success, title, msg, msgFail) {
+            const fbPanel = document.getElementById('game-feedback');
+            const fbContent = document.getElementById('feedback-content');
+            const btnRetry = document.getElementById('btn-retry');
+            const btnComplete = document.getElementById('btn-complete-day');
+
+            fbPanel.classList.remove('hidden');
+            
+            if (success) {
+                fbContent.className = "p-4 rounded-xl text-center border bg-green-900/30 border-green-500 text-green-400";
+                fbContent.innerHTML = `<div class="text-2xl mb-1">✅</div><div class="font-black uppercase">${title}</div><div class="text-xs">${msg}</div>`;
+                btnComplete.disabled = false;
+                btnComplete.onclick = () => completeDay(currentDayId);
+                btnRetry.classList.add('hidden'); // Ocultar retry si ganó
+            } else {
+                fbContent.className = "p-4 rounded-xl text-center border bg-red-900/30 border-red-500 text-red-400";
+                fbContent.innerHTML = `<div class="text-2xl mb-1">❌</div><div class="font-black uppercase">${title}</div><div class="text-xs">${msgFail}</div>`;
+                btnComplete.disabled = true;
+                btnRetry.classList.remove('hidden');
+                btnRetry.onclick = () => {
+                    // Reiniciar juego
+                    const reto = RETOS[currentDayId-1];
+                    openReto(currentDayId);
+                };
+            }
+        }
+
+        function completeDay(id) {
+            if(!userProgress.includes(id)) {
+                userProgress.push(id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+            }
+            closeModal();
+            renderGrid();
+        }
+
+        function closeModal() {
+            document.getElementById('modal-reto').classList.replace('flex', 'hidden');
+        }
+
+        function resetProgress() {
+            if(confirm("¿Reiniciar todo el entrenamiento de 21 días?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                userProgress = [];
+                renderGrid();
+            }
+        }
+
+        function saveMotive(val) {
+            localStorage.setItem('cacom4_motive', val);
+        }
+        function loadMotive() {
+            const m = localStorage.getItem('cacom4_motive');
+            if(m) document.getElementById('personal-motive').value = m;
+        }
+
+        // --- CHART (Gráfica Estética) ---
+        function initChart() {
+            const ctx = document.getElementById('accidentalidadChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'],
+                    datasets: [{
+                        label: 'Proyección 2025',
+                        data: [40, 45, 55, 60, 58, 65, 70, 75, 80, 90, 100, 120],
+                        borderColor: '#eab308',
+                        backgroundColor: (context) => {
+                            const ctx = context.chart.ctx;
+                            const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+                            gradient.addColorStop(0, 'rgba(234,179,8,0.5)');
+                            gradient.addColorStop(1, 'rgba(234,179,8,0)');
+                            return gradient;
+                        },
+                        borderWidth: 3,
+                        pointBackgroundColor: '#000',
+                        pointBorderColor: '#eab308',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: { 
+                    maintainAspectRatio: false, 
+                    plugins: { legend: { display: false } },
+                    scales: { 
+                        y: { grid: { color: '#374151' }, ticks: { color: '#9ca3af' } }, 
+                        x: { grid: { display: false }, ticks: { color: '#9ca3af' } } 
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
