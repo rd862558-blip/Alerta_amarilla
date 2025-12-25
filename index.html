@@ -74,7 +74,7 @@
 
     <main class="container mx-auto px-4 py-6 space-y-12">
 
-        <!-- SECCIÓN 1: CAMPAÑA VISUAL (REDDISEÑADA) -->
+        <!-- SECCIÓN 1: CAMPAÑA VISUAL (IMÁGENES TIPO IA) -->
         <section class="space-y-6">
             <div class="flex items-center gap-2">
                 <div class="w-2 h-8 bg-yellow-500"></div>
@@ -84,56 +84,72 @@
                 </div>
             </div>
             
-            <!-- Grid de Imágenes (Vertical para asegurar visibilidad total) -->
+            <!-- Grid de Imágenes -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
-                <!-- SLOT 1 -->
+                <!-- SLOT 1: IDENTIFICACIÓN (NUEVA IMAGEN: LLUVIA EN PARABRISAS) -->
                 <div class="relative h-64 bg-slate-900 rounded-3xl overflow-hidden border-2 border-slate-800 shadow-xl group hover:border-yellow-500 transition-all">
-                    <!-- Placeholder Táctico (SVG) -->
-                    <div class="absolute inset-0 flex flex-col items-center justify-center">
-                        <svg class="w-20 h-20 text-yellow-500/20 mb-2 group-hover:text-yellow-500/40 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                        <p class="text-slate-600 text-[10px] font-mono uppercase tracking-widest">[IMAGEN FASE 1]</p>
-                    </div>
+                    <!-- Imagen: Vista desde el conductor con lluvia y luces borrosas (Riesgo real) -->
+                    <img src="https://images.unsplash.com/photo-1516912481808-3406841bd33c?auto=format&fit=crop&q=80&w=800" alt="Conducción peligrosa con lluvia en parabrisas" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
                     
                     <!-- Capa de Texto -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                     <div class="absolute bottom-6 left-6 z-10">
                         <span class="bg-yellow-500 text-black text-[10px] font-bold px-3 py-1 rounded-full mb-2 inline-block shadow-lg">FASE 1</span>
-                        <h3 class="text-white font-black text-2xl leading-none uppercase italic">Identificación<br>del Riesgo</h3>
+                        <h3 class="text-white font-black text-2xl leading-none uppercase italic drop-shadow-lg">Identificación<br>del Riesgo</h3>
                     </div>
                 </div>
 
-                <!-- SLOT 2 -->
+                <!-- SLOT 2: CONCIENCIA -->
                 <div class="relative h-64 bg-slate-900 rounded-3xl overflow-hidden border-2 border-slate-800 shadow-xl group hover:border-yellow-500 transition-all">
-                    <!-- Placeholder Táctico (SVG) -->
-                    <div class="absolute inset-0 flex flex-col items-center justify-center">
-                        <svg class="w-20 h-20 text-yellow-500/20 mb-2 group-hover:text-yellow-500/40 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        <p class="text-slate-600 text-[10px] font-mono uppercase tracking-widest">[IMAGEN FASE 2]</p>
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=800" alt="Conductor atento" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
                     
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                     <div class="absolute bottom-6 left-6 z-10">
                         <span class="bg-yellow-500 text-black text-[10px] font-bold px-3 py-1 rounded-full mb-2 inline-block shadow-lg">FASE 2</span>
-                        <h3 class="text-white font-black text-2xl leading-none uppercase italic">Conciencia<br>Situacional</h3>
+                        <h3 class="text-white font-black text-2xl leading-none uppercase italic drop-shadow-lg">Conciencia<br>Situacional</h3>
                     </div>
                 </div>
 
-                <!-- SLOT 3 -->
+                <!-- SLOT 3: REGRESO SEGURO -->
                 <div class="relative h-64 bg-slate-900 rounded-3xl overflow-hidden border-2 border-slate-800 shadow-xl group hover:border-yellow-500 transition-all">
-                    <!-- Placeholder Táctico (SVG) -->
-                    <div class="absolute inset-0 flex flex-col items-center justify-center">
-                        <svg class="w-20 h-20 text-yellow-500/20 mb-2 group-hover:text-yellow-500/40 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                        <p class="text-slate-600 text-[10px] font-mono uppercase tracking-widest">[IMAGEN FASE 3]</p>
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1484863137850-59afcfe05386?auto=format&fit=crop&q=80&w=800" alt="Familia militar" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
                     
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                     <div class="absolute bottom-6 left-6 z-10">
                         <span class="bg-yellow-500 text-black text-[10px] font-bold px-3 py-1 rounded-full mb-2 inline-block shadow-lg">FASE 3</span>
-                        <h3 class="text-white font-black text-2xl leading-none uppercase italic">Regreso<br>Seguro</h3>
+                        <h3 class="text-white font-black text-2xl leading-none uppercase italic drop-shadow-lg">Regreso<br>Seguro</h3>
                     </div>
                 </div>
 
             </div>
+        </section>
+
+<section class="space-y-6">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-8 bg-red-600 animate-pulse"></div>
+                <div>
+                    <h2 class="text-2xl font-black uppercase text-white">Instrucción de Comando</h2>
+                    <p class="text-xs text-slate-400">Material audiovisual clasificado para entrenamiento</p>
+                </div>
+            </div>
+            
+            <div class="bg-black rounded-3xl overflow-hidden shadow-2xl border-4 border-yellow-500/50 relative">
+                <div class="absolute top-4 left-4 z-20 flex gap-2">
+                    <span class="bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded animate-pulse">EN VIVO ●</span>
+                    <span class="bg-black/50 text-white text-[10px] font-mono px-2 py-1 rounded border border-white/20">CAM-04</span>
+                </div>
+                
+                <div class="aspect-video w-full bg-slate-900 flex items-center justify-center relative group">
+                    <video controls loop class="w-full h-full object-cover">
+                        <source src="alerta.mp4" type="video/mp4">
+                        Su navegador no soporta el formato de video.
+                    </video>
+                </div>
+            </div>
+        </section>
+
+             
         </section>
 
         <!-- SECCIÓN 2: ESTADÍSTICA DE IMPACTO -->
